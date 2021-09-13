@@ -37,7 +37,7 @@ var fightOrSkip = function() {
 }
 
 var fight = function(enemy) {
-    debugger;
+
     // keep track of who goes first
     var isPlayerTurn = true;
 
@@ -209,9 +209,6 @@ var startGame = function() {
             // reset enemyHealth before starting new fight - btw 40 and 60
             pickedEnemyObj.health = randomNumber(40, 60);
 
-            // use debugger to pause script from running and check what's going on at that moment in the code
-            // debugger;
-
             // pass the pickedEnemyName variable's value into the fight function, 
             // where it will assume the value of the enemyName parameter
             fight(pickedEnemyObj);
@@ -235,11 +232,29 @@ var startGame = function() {
     // function to end the entire game
     var endGame = function() {
         // if player is still alive, they win!
-        if (playerInfo.health > 0) {
-            window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ".");
-        } else {
-            window.alert("You've lost your robot in battle.")
+        // if (playerInfo.health > 0) {
+        //     window.alert("Great job, you've survived the game! You now have a score of " + playerInfo.money + ".");
+        // } else {
+        //     window.alert("You've lost your robot in battle.")
+        // }
+        window.alert("The game has now ended. Let's see how you did!");
+
+        // check localStorage for high score, if not there, use 0
+        var highScore = localStorage.getItem("highscore");
+        if (highScore === null) {
+            highScore = 0;
         }
+
+        // if player has more money than the high score, player has new high score
+        if (playerInfo.money > highScore) {
+            localStorage.setItem("highscore", playerInfo.money);
+            localStorage.setItem("name", playerInfo.name);
+
+            alert(playerInfo.name + " now has the high score of " + playerInfo.money + "!");
+        }
+        else {
+            alert(playerInfo.name + " did not beat the high score of " + highScore + ". Maybe next time!");
+        }  
 
         // ask player if they want to play again
         var playAgainConfirm = window.confirm("Would you like to play again?");
